@@ -1,0 +1,4 @@
+# ssh
+ssh -t 强制分配伪终端，
+ssh -T 禁止分配伪终端，不显示终端，只显示链接成功信息,测试github ssh connection时，可以ssh -T git@github.com
+

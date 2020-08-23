@@ -1,4 +1,6 @@
 # ssh
-ssh -t 强制分配伪终端，
+强制分配伪终端-使用ssh -t 或 ssh -tt
 ssh -T 禁止分配伪终端，不显示终端，只显示链接成功信息,测试github ssh connection时，可以ssh -T git@github.com
-
+e.g:
+ Pseudo-terminal will not be allocated because stdin is not a terminal
+意思是无法分配一个伪终端，在伪终端执行脚本，可以进行交互；而没有伪终端，则不能进行交互

@@ -23,7 +23,9 @@ public class MyReadWriteLock {
     }
 
     public synchronized void unLockRead() throws InterruptedException {
-        state -= 1 << 16;
+        if (getReadCount() > 0) {
+            state -= 1 << 16;
+        }
         System.out.println("unLock Read ---" + Thread.currentThread().getName());
         notifyAll();
     }
@@ -36,8 +38,10 @@ public class MyReadWriteLock {
         state += 1;
     }
 
-    public synchronized void unLockWrite()  {
-        state -= 1;
+    public synchronized void unLockWrite() {
+        if (getWriteCount() > 0) {
+            state -= 1;
+        }
         System.out.println("unLock write ---" + Thread.currentThread().getName());
         notifyAll();
     }

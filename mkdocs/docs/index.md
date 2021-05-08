@@ -44,6 +44,8 @@ For full documentation visit [mkdocs.org](https://www.mkdocs.org).
       字典dict+ 跳表
  
      2. 说下持久化策略
+     rdb 和aof 若持久化时有新的请求过来是怎么处理？
+     https://blog.csdn.net/weixin_38405253/article/details/106416618
  
 ####mysql
   1. 底层的数据结构

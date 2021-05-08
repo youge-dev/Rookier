@@ -1,8 +1,7 @@
 # Welcome to YougeDocs
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
-
 ## 面试
+
 ### 社招面试
 知乎一面(挂，技术不符golang)
 ####网络
@@ -33,13 +32,15 @@ For full documentation visit [mkdocs.org](https://www.mkdocs.org).
      通过sendfile实现零拷贝原则
      （原始 文件->内核->用户缓冲区->socket->消费者进程  调用linux系统函数, 文件->内核->socket->消费者进程）
 ####Redis
-     1. zset 的底层实现 
-      字典dict+ 跳表
+   1. zset 的底层实现 
+   
+   字典dict+ 跳表
  
-     2. 说下持久化策略
-     rdb 和aof 若持久化时有新的请求过来是怎么处理？
-     https://blog.csdn.net/weixin_38405253/article/details/106416618
- 
+   2. 说下持久化策略
+   
+   rdb 和aof 若持久化时有新的请求过来是怎么处理？
+   [rbd 写时复制](https://blog.csdn.net/weixin_38405253/article/details/106416618).
+    
 ####mysql
   1. 底层的数据结构
 

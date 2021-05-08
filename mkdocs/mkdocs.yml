@@ -1,2 +1,5 @@
 site_name: Youge
+pages:
+  - 主页: index.md
+  - About: about.md
 theme: readthedocs

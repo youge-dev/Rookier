@@ -1,3 +1,11 @@
+# Youge Docs
+
+## About   
+* 1995年6月3日 Rookier,keep moving 
+* 梦想有一天成为某领域的技术大佬
+
+## Contact 
+* 邮箱：1684728228@qq.com
 ## Commands
 For full documentation visit [mkdocs.org](https://www.mkdocs.org).
 

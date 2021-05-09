@@ -8,10 +8,10 @@
 **网络**
 --
    + timewait 为什么等待2MSL?   
-     保证TCP协议的全双工连接能够可靠关闭
+      - 保证TCP协议的全双工连接能够可靠关闭   
      如果Client直接CLOSED了，导致Server没有收到Client最后回复的ACK。那么Server就会在超时之后继续发送FIN，此时由于Client已经CLOSED了，就找不到与重发的FIN对应的连接，最后Server就会收到RST而不是ACK，Server就会以为是连接错误把问题报告给高层。这样的情况虽然不会造成数据丢失，但是却导致TCP协议不符合可靠连接的要求。所以，Client不是直接进入CLOSED，而是要保持TIME_WAIT，当再次收到FIN的时候，能够保证对方收到ACK，最后正确的关闭连接。
      保证这次连接的重复数据段从网络中消失
-     TIME_WAIT状态等待2MSL，这样可以保证本次连接的所有数据都从网络中消失
+      - TIME_WAIT状态等待2MSL，这样可以保证本次连接的所有数据都从网络中消失   
      TIME_WAIT至少需要持续2MSL时长，这2个MSL中的第一个MSL是为了等自己发出去的最后一个ACK从网络中消失，而第二MSL是为了等在对端收到ACK之前的一刹那可能重传的FIN报文从网络中消失。
    + 流量控制的机制   
      -[滑动窗口](https://zhuanlan.zhihu.com/p/133307545)

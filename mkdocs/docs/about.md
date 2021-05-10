@@ -118,6 +118,7 @@ set redis-key redis-value ex 5 nx
 #### 二面
 ##### docker怎么分层存储的？问的底层实现
 ##### mysql
+##### mongo遇到什么问题，mongo的底层实现/索引
 ##### 设计
    -  滑动时间窗口内的限流实现(zset)
 ```

@@ -102,7 +102,21 @@ set redis-key redis-value ex 5 nx
 #####项目介绍   
 画出项目结构图 
 ##### springboot
-   - 循环引用解决方法
+   - 循环引用解决方法 
+      - [三级缓存](https://blog.csdn.net/u010853261/article/details/77940767) 单例对象初始化:createBeanInstance实例化(解决循环依赖关键：是构造后调用addSingletonFactory提前曝光bean到三级缓存中)->populateBean填充属性->initializeBean 
+      - @lazy 懒加载，动态代理创建了一个类，返回一个代理bean[lazy加载](https://blog.csdn.net/weixin_43859729/article/details/111059470)
+   - aop在spring中的体现是
+      - 拦截器就是aop的一种体现，基于动态代理实现
+   - hashmap的实现
+      - 为什么是数组+链表   
+      链表是为了解决哈希冲突,jdk1.8前是数组+链表，之后是数组+链表/红黑树
+      - 链表的长度有限制吗
+      链表长度大于8时并且数组长度>=64，红黑树操作，否则只是resize扩容
+   - threadLocal
+      - 线程安全的，本质是内部的静态map,线程本地存储
+
+##### 网络
+   - cookies 和 session的优缺点  
 ##### mysql
    - 又被问到了,`需要开始搞mysql的原理`
 ##### kafka的使用

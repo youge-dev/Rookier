@@ -1,10 +1,8 @@
 ## 社招面经
-
 ### 知乎
 交流了1h,自我感觉回答还可以，主要原因是个人主要做的toB业务，toC经验缺乏,知乎用golang
 #### 一面(挂)
-**网络**
---
+##### 网络
    + timewait 为什么等待2MSL?   
       - 保证TCP协议的全双工连接能够可靠关闭   
      如果Client直接CLOSED了，导致Server没有收到Client最后回复的ACK。那么Server就会在超时之后继续发送FIN，此时由于Client已经CLOSED了，就找不到与重发的FIN对应的连接，最后Server就会收到RST而不是ACK，Server就会以为是连接错误把问题报告给高层。这样的情况虽然不会造成数据丢失，但是却导致TCP协议不符合可靠连接的要求。所以，Client不是直接进入CLOSED，而是要保持TIME_WAIT，当再次收到FIN的时候，能够保证对方收到ACK，最后正确的关闭连接。
@@ -27,8 +25,7 @@
       - 查看服务提供者的堆栈信息，有无线程hang/有无死锁/有无阻塞等待
       - 查看服务提供者是否有内存溢出
       
-**kafka**
----
+#####　kafka
    1. kafka的架构是  
    2. 消费者数量一定时候如何提高消费能力 [提供消费能力](https://www.jianshu.com/p/4e00dff97f39)
    3. 吞吐量大的原因   
@@ -40,8 +37,7 @@
          - 零拷贝是调用linux系统函数, 文件->内核read buffer->内核socket->消费者进程 
     
 
-**Redis**
----
+##### Redis
    * zset 的底层实现以及检索复杂度
       - 字典dict+ 跳表zskiplist
          - dict可以O(1)检索单个元素
@@ -52,32 +48,26 @@
    [rbd 写时复制](https://blog.csdn.net/weixin_38405253/article/details/106416618)   
    [aof机制](https://redisbook.readthedocs.io/en/latest/internal/aof.html)
     
-**Mysql**
----
-- 基本了解
+##### Mysql
+- 基本了解   
 
-**golang**使用情况
----
-
+##### golang
+使用情况   
 ### Boss直聘
 通过
 #### 一面
-**微服务**
----
+##### 微服务
 - 介绍微服务
 - 微服务包含的模块有哪些
 
-**Kafka**
----
+##### Kafka
 - 基本介绍
 
-**Spring/boot**
----
+##### Spring/boot
 - spring 特性
 - springboot 相比spring的好处
 - aop使用的场景
 
-**Redis**
----
+##### Redis
 - 基本介绍
 - 持久化策略的区别以及优点缺点

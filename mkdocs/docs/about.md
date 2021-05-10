@@ -96,3 +96,40 @@ set redis-key redis-value ex 5 nx
 ##### Redis
 - 基本介绍
 - 持久化策略的区别以及优点缺点
+
+### soul（广告推荐）
+#### 一面  
+#####项目介绍   
+画出项目结构图 
+##### springboot
+   - 循环引用解决方法
+##### mysql
+   - 又被问到了,`需要开始搞mysql的原理`
+##### kafka的使用
+   - 介绍了使用以及分区机制
+##### 系统设计
+   - 以发微博为例，A用户发布了动态消息，只有好友能看到，如何设计
+##### 算法题
+```
+输入是a="cbacbfhj",b="abc",也就是a中包含b的所有起始index
+返回[0,1,2]
+```
+
+#### 二面
+##### docker怎么分层存储的？问的底层实现
+##### mysql
+##### 设计
+   -  滑动时间窗口内的限流实现(zset)
+```
+def is_action_allowed(user_id, action_key, period, max_count):
+    key = 'hist:%s:%s' % (user_id, action_key)
+    now_ts = int(time.time() * 1000) # 毫秒时间戳
+    with client.pipeline() as pipe: 
+    pipe.zadd(key, now_ts, now_ts) # value 和 score 都使用毫秒时间戳
+    pipe.zremrangebyscore(key, 0, now_ts - period * 1000) # 移除时间窗口之前的行为记录，剩下的都是时间窗口内的
+    pipe.zcard(key)    # 获取窗口内的行为数量
+    _, _, current_count, _ = pipe.execute()
+    pipe.expire(key, period + 1)
+    return current_count <= max_count # 比较数量是否超标
+```
+   - 有1亿用户,每个用户有100个tag,有100W个广告,每个广告有100个tag,设计找出最匹配用户的广告

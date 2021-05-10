@@ -96,17 +96,19 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#springboot_1">springboot</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_9">网络</a>
+    </li>
     <li class="toctree-l4"><a class="reference internal" href="#mysql_1">mysql</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#kafka_2">kafka的使用</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#_9">系统设计</a>
+    <li class="toctree-l4"><a class="reference internal" href="#_10">系统设计</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#_10">算法题</a>
+    <li class="toctree-l4"><a class="reference internal" href="#_11">算法题</a>
     </li>
         </ul>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#_11">二面</a>
+    <li class="toctree-l3"><a class="reference internal" href="#_12">二面</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#docker">docker怎么分层存储的？问的底层实现</a>
     </li>
@@ -114,7 +116,7 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#mongomongo">mongo遇到什么问题，mongo的底层实现/索引</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#_12">设计</a>
+    <li class="toctree-l4"><a class="reference internal" href="#_13">设计</a>
     </li>
         </ul>
     </li>
@@ -248,7 +250,6 @@ ex表示expire, nx表示if not exist</li>
 </ul>
 <pre><code>set redis-key redis-value ex 5 nx      
 </code></pre>
-
 <p>解锁 del redis-key <br />
 为防止误解锁,redis-value可设置为可标识当前线程的唯一id,eg:UUID <br />
 <a href="https://mp.weixin.qq.com/s/qJK61ew0kCExvXrqb7-RSg">Redis 分布式锁的正确实现方式</a> <br />
@@ -292,7 +293,30 @@ ex表示expire, nx表示if not exist</li>
 <p>画出项目结构图 </p>
 <h5 id="springboot_1">springboot</h5>
 <ul>
-<li>循环引用解决方法</li>
+<li>循环引用解决方法 <ul>
+<li><a href="https://blog.csdn.net/u010853261/article/details/77940767">三级缓存</a> 单例对象初始化:createBeanInstance实例化(解决循环依赖关键：是构造后调用addSingletonFactory提前曝光bean到三级缓存中)-&gt;populateBean填充属性-&gt;initializeBean </li>
+<li>@lazy 懒加载，动态代理创建了一个类，返回一个代理bean<a href="https://blog.csdn.net/weixin_43859729/article/details/111059470">lazy加载</a></li>
+</ul>
+</li>
+<li>aop在spring中的体现是<ul>
+<li>拦截器就是aop的一种体现，基于动态代理实现</li>
+</ul>
+</li>
+<li>hashmap的实现<ul>
+<li>为什么是数组+链表 <br />
+  链表是为了解决哈希冲突,jdk1.8前是数组+链表，之后是数组+链表/红黑树</li>
+<li>链表的长度有限制吗
+  链表长度大于8时并且数组长度&gt;=64，红黑树操作，否则只是resize扩容</li>
+</ul>
+</li>
+<li>threadLocal<ul>
+<li>线程安全的，本质是内部的静态map,线程本地存储</li>
+</ul>
+</li>
+</ul>
+<h5 id="_9">网络</h5>
+<ul>
+<li>cookies 和 session的优缺点  </li>
 </ul>
 <h5 id="mysql_1">mysql</h5>
 <ul>
@@ -302,20 +326,19 @@ ex表示expire, nx表示if not exist</li>
 <ul>
 <li>介绍了使用以及分区机制</li>
 </ul>
-<h5 id="_9">系统设计</h5>
+<h5 id="_10">系统设计</h5>
 <ul>
 <li>以发微博为例，A用户发布了动态消息，只有好友能看到，如何设计</li>
 </ul>
-<h5 id="_10">算法题</h5>
+<h5 id="_11">算法题</h5>
 <pre><code>输入是a=&quot;cbacbfhj&quot;,b=&quot;abc&quot;,也就是a中包含b的所有起始index
 返回[0,1,2]
 </code></pre>
-
-<h4 id="_11">二面</h4>
+<h4 id="_12">二面</h4>
 <h5 id="docker">docker怎么分层存储的？问的底层实现</h5>
 <h5 id="mysql_2">mysql</h5>
 <h5 id="mongomongo">mongo遇到什么问题，mongo的底层实现/索引</h5>
-<h5 id="_12">设计</h5>
+<h5 id="_13">设计</h5>
 <ul>
 <li>滑动时间窗口内的限流实现(zset)</li>
 </ul>
@@ -330,7 +353,6 @@ ex表示expire, nx表示if not exist</li>
     pipe.expire(key, period + 1)
     return current_count &lt;= max_count # 比较数量是否超标
 </code></pre>
-
 <ul>
 <li>有1亿用户,每个用户有100个tag,有100W个广告,每个广告有100个tag,设计找出最匹配用户的广告</li>
 </ul>

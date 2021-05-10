@@ -87,7 +87,11 @@ set redis-key redis-value ex 5 nx
 ##### Spring/boot
 - spring 特性
 - springboot 相比spring的好处
-- aop使用的场景
+- aop使用的场景    [aop原理以及实现](https://blog.csdn.net/u010452388/article/details/80868392)
+   - 记录日志
+   - 监控方法的运行时间
+   - 权限控制
+   - 事务管理 （调用方法前开启事务， 调用方法后提交关闭事务 ）
 
 ##### Redis
 - 基本介绍

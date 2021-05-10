@@ -12,4 +12,5 @@ jserver
 *.iml
 target/
 gradle
+.gradle
 gradlew*

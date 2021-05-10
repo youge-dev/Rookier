@@ -1,16 +1,83 @@
-# Youge Docs
+## 社招面经
 
-## About   
-* 1995年6月3日 Rookier,keep moving 
-* 梦想有一天成为某领域的技术大佬
+### 知乎
+交流了1h,自我感觉回答还可以，主要原因是个人主要做的toB业务，toC经验缺乏,知乎用golang
+#### 一面(挂)
+**网络**
+--
+   + timewait 为什么等待2MSL?   
+      - 保证TCP协议的全双工连接能够可靠关闭   
+     如果Client直接CLOSED了，导致Server没有收到Client最后回复的ACK。那么Server就会在超时之后继续发送FIN，此时由于Client已经CLOSED了，就找不到与重发的FIN对应的连接，最后Server就会收到RST而不是ACK，Server就会以为是连接错误把问题报告给高层。这样的情况虽然不会造成数据丢失，但是却导致TCP协议不符合可靠连接的要求。所以，Client不是直接进入CLOSED，而是要保持TIME_WAIT，当再次收到FIN的时候，能够保证对方收到ACK，最后正确的关闭连接。
+      - 保证这次连接的重复数据段从网络中消失
+     TIME_WAIT状态等待2MSL，这样可以保证本次连接的所有数据都从网络中消失,这2个MSL中第一个MSL是为了等自己发出去的最后一个ACK从网络中消失，而第二MSL是为了等在对端收到ACK之前的一刹那可能重传的FIN报文从网络中消失。
+   + 流量控制的机制   
+     -[滑动窗口](https://zhuanlan.zhihu.com/p/133307545)
+   -  IO多路复用 （select/poll/epoll）  [多路复用](https://juejin.cn/post/6844904200141438984)  
+      - select是不断轮询去监听的socket，socket个数有限制，一般为1024个；   
+      - poll还是采用轮询方式监听，只不过没有个数限制；  
+      - epoll并不是采用轮询方式去监听了，而是当socket有变化时通过回调的方式主动告知用户进程。
+   -  close wait 说明了什么？  
+      - 服务器端的代码，没有写 close 函数关闭 socket 连接，也就不会发出 FIN 报文段；或者出现死循环，服务器端的代码永远执行不到 close。  
+      - close_wait的危害在于，在一个进程上打开的文件描述符超过一定数量，（在linux上默认是1024，可修改），新来的socket连接就无法建立了，因为每个socket连接也算是一个文件描述符。
+   -  Rpc 调用服务timeout,排查的思路
+      - 查看消费者/服务提供者的超时时间是否合理
+      - 检查消费者和服务提供者的网络连接是否OK（telnet/nc命令）
+      - 查看服务提供者的日志信息进行排查
+      - 查看服务提供者业务逻辑是否有db操作，有的话check是否有慢查询
+      - 查看服务提供者的堆栈信息，有无线程hang/有无死锁/有无阻塞等待
+      - 查看服务提供者是否有内存溢出
+      
+**kafka**
+---
+   1. kafka的架构是  
+   2. 消费者数量一定时候如何提高消费能力 [提供消费能力](https://www.jianshu.com/p/4e00dff97f39)
+   3. 吞吐量大的原因   
+      - 日志顺序读写和快速检索  
+      - partition机制 (并行但不保证全topic有序)  
+      - 批量发送接收和数据压缩机制  
+      - 通过sendfile实现零拷贝原则   [零拷贝](https://zhuanlan.zhihu.com/p/78335525)
+         - 以前是文件->内核->用户缓冲区->内核socket->消费者进程  
+         - 零拷贝是调用linux系统函数, 文件->内核read buffer->内核socket->消费者进程 
+    
 
-## Contact 
-* 邮箱：1684728228@qq.com
-## Commands
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+**Redis**
+---
+   * zset 的底层实现以及检索复杂度
+      - 字典dict+ 跳表zskiplist
+         - dict可以O(1)检索单个元素
+         - zskiplist可以O(logn)检索范围 
+            - zskiplist没有做插入的去重（会存在同一个key，插入两次）  
+   * 说下持久化策略(rdb/aof)
+      - rdb 和aof 若持久化时有新的请求过来是怎么处理？
+   [rbd 写时复制](https://blog.csdn.net/weixin_38405253/article/details/106416618)   
+   [aof机制](https://redisbook.readthedocs.io/en/latest/internal/aof.html)
+    
+**Mysql**
+---
+- 基本了解
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
-* `mkdocs gh-deploy` - Push github branch gh-deploy and show.
+**golang**使用情况
+---
+
+### Boss直聘
+通过
+#### 一面
+**微服务**
+---
+- 介绍微服务
+- 微服务包含的模块有哪些
+
+**Kafka**
+---
+- 基本介绍
+
+**Spring/boot**
+---
+- spring 特性
+- springboot 相比spring的好处
+- aop使用的场景
+
+**Redis**
+---
+- 基本介绍
+- 持久化策略的区别以及优点缺点

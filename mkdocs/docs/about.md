@@ -11,10 +11,20 @@
      这2个MSL中第一个MSL是为了等自己发出去的最后一个ACK从网络中消失，而第二MSL是为了等在对端收到ACK之前的一刹那可能重传的FIN报文从网络中消失。
    + 流量控制的机制   
      -[滑动窗口](https://zhuanlan.zhihu.com/p/133307545)
-   -  IO多路复用 （select/poll/epoll）  [多路复用](https://juejin.cn/post/6844904200141438984)  
-      - select是不断轮询去监听的socket，socket个数有限制，一般为1024个；   
-      - poll还是采用轮询方式监听，只不过没有个数限制；  
-      - epoll并不是采用轮询方式去监听了，而是当socket有变化时通过回调的方式主动告知用户进程。
+   - 网络IO模型有   
+      - 阻塞IO
+      - 非阻塞IO
+      - IO多路复用
+      - 信号驱动IO
+      - 异步IO  (唯一的程序非阻塞)
+   -  IO多路复用 （select/poll/epoll）  
+   [多路复用](https://juejin.cn/post/6844904200141438984)  
+      - select是把fd_Set从用户态拷贝到内核,内核轮询去监听fd数组,一旦某fd活跃,把整个fd_set从内核拷贝到用户态，socket个数有限制，一般为1024个,时间复杂度O(n)；   
+      - poll本质上和select没有区别,无最大链接数限制(原因是链表存储)；  
+      - epoll是event poll,事件驱动IO，当socket有流时会主动回调告知用户进程，时间复杂度O(1)。
+         - 通过内核与用户空间mmap(内存映射)同一块内存,降低用户态/内核态数据交换
+         - 红黑树存储所有socket/链表list存储活跃socket   
+       [select与epoll区别](https://www.jianshu.com/p/430141f95ddb)
    -  close wait 说明了什么？  
       - 服务器端的代码，没有写 close 函数关闭 socket 连接，也就不会发出 FIN 报文段；或者出现死循环，服务器端的代码永远执行不到 close。  
       - close_wait的危害在于，在一个进程上打开的文件描述符超过一定数量，（在linux上默认是1024，可修改），新来的socket连接就无法建立了，因为每个socket连接也算是一个文件描述符。
@@ -50,6 +60,15 @@
    [aof机制](https://redisbook.readthedocs.io/en/latest/internal/aof.html)   
    [aof重写](http://doc.redisfans.com/topic/persistence.html)
       - aof 重写: fork子进程写新aof文件，期间新的写命令，父进程一边累积到内存cache,一边写到旧aof文件,子进程重写完成发信号给父进程，父进程将内存cache数据追加到新aof，并替换老aof
+   * 分布式锁实现   
+ex表示expire, nx表示if not exist
+```
+set redis-key redis-value ex 5 nx      
+```
+解锁 del redis-key   
+为防止误解锁,redis-value可设置为可标识当前线程的唯一id,eg:UUID   
+[Redis 分布式锁的正确实现方式](https://mp.weixin.qq.com/s/qJK61ew0kCExvXrqb7-RSg)   
+[分布式锁的实现之 redis 篇](https://xiaomi-info.github.io/2019/12/17/redis-distributed-lock/)
 ##### Mysql
 - 基本了解   
 

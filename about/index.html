@@ -9,7 +9,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>主页 - Youge</title>
+  <title>About - Youge</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../css/theme.css" />
@@ -18,7 +18,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "\u4e3b\u9875";
+    var mkdocs_page_name = "About";
     var mkdocs_page_input_path = "about.md";
     var mkdocs_page_url = null;
   </script>
@@ -47,20 +47,20 @@
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-                <ul class="current">
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">主页</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#about">About</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#contact">Contact</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#commands">Commands</a>
-    </li>
-    </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">主页</a>
                     </li>
                 </ul>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../daily/">About</a>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">About</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_2">知乎</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_3">一面(挂)</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
                     </li>
                 </ul>
       </div>
@@ -84,7 +84,7 @@
     
       
     
-    <li>主页</li>
+    <li>About</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -95,24 +95,105 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="youge-docs">Youge Docs</h1>
-<h2 id="about">About</h2>
+                <h2 id="_1">社招面经</h2>
+<h3 id="_2">知乎</h3>
+<p>交流了1h,自我感觉回答还可以，主要原因是个人主要做的toB业务，toC经验缺乏,知乎用golang</p>
+<h4 id="_3">一面(挂)</h4>
+<h2 id="_4"><strong>网络</strong></h2>
 <ul>
-<li>1995年6月3日 Rookier,keep moving </li>
-<li>梦想有一天成为某领域的技术大佬</li>
+<li>timewait 为什么等待2MSL?   <ul>
+<li>保证TCP协议的全双工连接能够可靠关闭 <br />
+ 如果Client直接CLOSED了，导致Server没有收到Client最后回复的ACK。那么Server就会在超时之后继续发送FIN，此时由于Client已经CLOSED了，就找不到与重发的FIN对应的连接，最后Server就会收到RST而不是ACK，Server就会以为是连接错误把问题报告给高层。这样的情况虽然不会造成数据丢失，但是却导致TCP协议不符合可靠连接的要求。所以，Client不是直接进入CLOSED，而是要保持TIME_WAIT，当再次收到FIN的时候，能够保证对方收到ACK，最后正确的关闭连接。</li>
+<li>保证这次连接的重复数据段从网络中消失
+ TIME_WAIT状态等待2MSL，这样可以保证本次连接的所有数据都从网络中消失,这2个MSL中第一个MSL是为了等自己发出去的最后一个ACK从网络中消失，而第二MSL是为了等在对端收到ACK之前的一刹那可能重传的FIN报文从网络中消失。</li>
 </ul>
-<h2 id="contact">Contact</h2>
-<ul>
-<li>邮箱：1684728228@qq.com</li>
+</li>
+<li>流量控制的机制 <br />
+     -<a href="https://zhuanlan.zhihu.com/p/133307545">滑动窗口</a></li>
+<li>IO多路复用 （select/poll/epoll）  <a href="https://juejin.cn/post/6844904200141438984">多路复用</a>  <ul>
+<li>select是不断轮询去监听的socket，socket个数有限制，一般为1024个；   </li>
+<li>poll还是采用轮询方式监听，只不过没有个数限制；  </li>
+<li>epoll并不是采用轮询方式去监听了，而是当socket有变化时通过回调的方式主动告知用户进程。</li>
 </ul>
-<h2 id="commands">Commands</h2>
-<p>For full documentation visit <a href="https://www.mkdocs.org">mkdocs.org</a>.</p>
+</li>
+<li>close wait 说明了什么？  <ul>
+<li>服务器端的代码，没有写 close 函数关闭 socket 连接，也就不会发出 FIN 报文段；或者出现死循环，服务器端的代码永远执行不到 close。  </li>
+<li>close_wait的危害在于，在一个进程上打开的文件描述符超过一定数量，（在linux上默认是1024，可修改），新来的socket连接就无法建立了，因为每个socket连接也算是一个文件描述符。</li>
+</ul>
+</li>
+<li>Rpc 调用服务timeout,排查的思路<ul>
+<li>查看消费者/服务提供者的超时时间是否合理</li>
+<li>检查消费者和服务提供者的网络连接是否OK（telnet/nc命令）</li>
+<li>查看服务提供者的日志信息进行排查</li>
+<li>查看服务提供者业务逻辑是否有db操作，有的话check是否有慢查询</li>
+<li>查看服务提供者的堆栈信息，有无线程hang/有无死锁/有无阻塞等待</li>
+<li>查看服务提供者是否有内存溢出</li>
+</ul>
+</li>
+</ul>
+<h2 id="kafka"><strong>kafka</strong></h2>
+<ol>
+<li>kafka的架构是  </li>
+<li>消费者数量一定时候如何提高消费能力 <a href="https://www.jianshu.com/p/4e00dff97f39">提供消费能力</a></li>
+<li>吞吐量大的原因   <ul>
+<li>日志顺序读写和快速检索  </li>
+<li>partition机制 (并行但不保证全topic有序)  </li>
+<li>批量发送接收和数据压缩机制  </li>
+<li>通过sendfile实现零拷贝原则   <a href="https://zhuanlan.zhihu.com/p/78335525">零拷贝</a><ul>
+<li>以前是文件-&gt;内核-&gt;用户缓冲区-&gt;内核socket-&gt;消费者进程  </li>
+<li>零拷贝是调用linux系统函数, 文件-&gt;内核read buffer-&gt;内核socket-&gt;消费者进程 </li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="redis"><strong>Redis</strong></h2>
 <ul>
-<li><code>mkdocs new [dir-name]</code> - Create a new project.</li>
-<li><code>mkdocs serve</code> - Start the live-reloading docs server.</li>
-<li><code>mkdocs build</code> - Build the documentation site.</li>
-<li><code>mkdocs -h</code> - Print help message and exit.</li>
-<li><code>mkdocs gh-deploy</code> - Push github branch gh-deploy and show.</li>
+<li>zset 的底层实现以及检索复杂度<ul>
+<li>字典dict+ 跳表zskiplist<ul>
+<li>dict可以O(1)检索单个元素</li>
+<li>zskiplist可以O(logn)检索范围 <ul>
+<li>zskiplist没有做插入的去重（会存在同一个key，插入两次）  </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>说下持久化策略(rdb/aof)<ul>
+<li>rdb 和aof 若持久化时有新的请求过来是怎么处理？
+   <a href="https://blog.csdn.net/weixin_38405253/article/details/106416618">rbd 写时复制</a> <br />
+<a href="https://redisbook.readthedocs.io/en/latest/internal/aof.html">aof机制</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="mysql"><strong>Mysql</strong></h2>
+<ul>
+<li>基本了解</li>
+</ul>
+<h2 id="golang"><strong>golang</strong>使用情况</h2>
+<h3 id="boss">Boss直聘</h3>
+<p>通过</p>
+<h4 id="_5">一面</h4>
+<h2 id="_6"><strong>微服务</strong></h2>
+<ul>
+<li>介绍微服务</li>
+<li>微服务包含的模块有哪些</li>
+</ul>
+<h2 id="kafka_1"><strong>Kafka</strong></h2>
+<ul>
+<li>基本介绍</li>
+</ul>
+<h2 id="springboot"><strong>Spring/boot</strong></h2>
+<ul>
+<li>spring 特性</li>
+<li>springboot 相比spring的好处</li>
+<li>aop使用的场景</li>
+</ul>
+<h2 id="redis_1"><strong>Redis</strong></h2>
+<ul>
+<li>基本介绍</li>
+<li>持久化策略的区别以及优点缺点</li>
 </ul>
               
             </div>
@@ -121,8 +202,8 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../daily/" class="btn btn-neutral float-right" title="About">Next <span class="icon icon-circle-arrow-right"></span></a>
       
+        <a href=".." class="btn btn-neutral" title="主页"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -148,8 +229,8 @@
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
+        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
       
-        <span style="margin-left: 15px"><a href="../daily/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

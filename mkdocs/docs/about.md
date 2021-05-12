@@ -148,3 +148,7 @@ def is_action_allowed(user_id, action_key, period, max_count):
     return current_count <= max_count # 比较数量是否超标
 ```
    - 有1亿用户,每个用户有100个tag,有100W个广告,每个广告有100个tag,设计找出最匹配用户的广告
+##### 线程池
+   - [线程池原理](https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html)
+      - 线程池初始化配置corePoolSize为3，依次提交3个任务执行后，线程池里有3个线程
+      - 线程6种状态(NEW Runnable WAITING TIMED_WAITING TERMINATED BLOCKED)

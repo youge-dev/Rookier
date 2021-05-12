@@ -152,3 +152,14 @@ def is_action_allowed(user_id, action_key, period, max_count):
    - [线程池原理](https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html)
       - 线程池初始化配置corePoolSize为3，依次提交3个任务执行后，线程池里有3个线程
       - 线程6种状态(NEW Runnable WAITING TIMED_WAITING TERMINATED BLOCKED)
+      
+### 美团
+体验很棒
+#### 一面
+##### kafka的追溯
+##### Redis的持久化策略
+##### java/sprintboot
+   - springboot 的循环引用解决
+   - 一个线程oom，会影响其他线程运行吗
+      - 答案是不会影响,因为当一个线程抛出OOM异常(无论堆还是栈)后，它所占据的内存资源会全部被释放掉，从而不会影响其他线程的运行(线程不像进程，一个进程中的线程之间是没有父子之分的，都是平级关系。即线程都是一样的, 退出了一个不会影响另外一个)
+   

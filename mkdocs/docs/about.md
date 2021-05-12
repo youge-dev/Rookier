@@ -97,6 +97,15 @@ set redis-key redis-value ex 5 nx
 - 基本介绍
 - 持久化策略的区别以及优点缺点
 
+#### 二面
+##### java
+   - java所有类的父类是(object),里面有几个方法，为什么有hashcode这个方法，用途是
+   - 在synchronized外面notify不行吗？（问的是notify的底层原理了，每个锁都有一个队列的，离开了synchronized就不知道notify哪些线程）
+   
+##### 设计
+   - 项目的设计的原因是啥
+   - 项目里面最深刻的问题以及最怎么解决的
+   
 ### soul（广告推荐）
 #### 一面  
 #####项目介绍   

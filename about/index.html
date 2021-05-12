@@ -86,29 +86,37 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_7">二面</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#java">java</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_8">设计</a>
+    </li>
+        </ul>
+    </li>
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#soul">soul（广告推荐）</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#_7">一面</a>
+    <li class="toctree-l3"><a class="reference internal" href="#_9">一面</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#_8">项目介绍</a>
+    <li class="toctree-l4"><a class="reference internal" href="#_10">项目介绍</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#springboot_1">springboot</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#_9">网络</a>
+    <li class="toctree-l4"><a class="reference internal" href="#_11">网络</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#mysql_1">mysql</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#kafka_2">kafka的使用</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#_10">系统设计</a>
+    <li class="toctree-l4"><a class="reference internal" href="#_12">系统设计</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#_11">算法题</a>
+    <li class="toctree-l4"><a class="reference internal" href="#_13">算法题</a>
     </li>
         </ul>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#_12">二面</a>
+    <li class="toctree-l3"><a class="reference internal" href="#_14">二面</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#docker">docker怎么分层存储的？问的底层实现</a>
     </li>
@@ -116,9 +124,23 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#mongomongo">mongo遇到什么问题，mongo的底层实现/索引</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#_13">设计</a>
+    <li class="toctree-l4"><a class="reference internal" href="#_15">设计</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#_14">线程池</a>
+    <li class="toctree-l4"><a class="reference internal" href="#_16">线程池</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_17">美团</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_18">一面</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#kafka_3">kafka的追溯</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#redis_2">Redis的持久化策略</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#javasprintboot">java/sprintboot</a>
     </li>
         </ul>
     </li>
@@ -290,9 +312,20 @@ ex表示expire, nx表示if not exist</li>
 <li>基本介绍</li>
 <li>持久化策略的区别以及优点缺点</li>
 </ul>
+<h4 id="_7">二面</h4>
+<h5 id="java">java</h5>
+<ul>
+<li>java所有类的父类是(object),里面有几个方法，为什么有hashcode这个方法，用途是</li>
+<li>在synchronized外面notify不行吗？（问的是notify的底层原理了，每个锁都有一个队列的，离开了synchronized就不知道notify哪些线程）</li>
+</ul>
+<h5 id="_8">设计</h5>
+<ul>
+<li>项目的设计的原因是啥</li>
+<li>项目里面最深刻的问题以及最怎么解决的</li>
+</ul>
 <h3 id="soul">soul（广告推荐）</h3>
-<h4 id="_7">一面</h4>
-<h5 id="_8">项目介绍</h5>
+<h4 id="_9">一面</h4>
+<h5 id="_10">项目介绍</h5>
 <p>画出项目结构图 </p>
 <h5 id="springboot_1">springboot</h5>
 <ul>
@@ -317,7 +350,7 @@ ex表示expire, nx表示if not exist</li>
 </ul>
 </li>
 </ul>
-<h5 id="_9">网络</h5>
+<h5 id="_11">网络</h5>
 <ul>
 <li>cookies 和 session的优缺点  </li>
 </ul>
@@ -329,20 +362,20 @@ ex表示expire, nx表示if not exist</li>
 <ul>
 <li>介绍了使用以及分区机制</li>
 </ul>
-<h5 id="_10">系统设计</h5>
+<h5 id="_12">系统设计</h5>
 <ul>
 <li>以发微博为例，A用户发布了动态消息，只有好友能看到，如何设计</li>
 </ul>
-<h5 id="_11">算法题</h5>
+<h5 id="_13">算法题</h5>
 <pre><code>输入是a=&quot;cbacbfhj&quot;,b=&quot;abc&quot;,也就是a中包含b的所有起始index
 返回[0,1,2]
 </code></pre>
 
-<h4 id="_12">二面</h4>
+<h4 id="_14">二面</h4>
 <h5 id="docker">docker怎么分层存储的？问的底层实现</h5>
 <h5 id="mysql_2">mysql</h5>
 <h5 id="mongomongo">mongo遇到什么问题，mongo的底层实现/索引</h5>
-<h5 id="_13">设计</h5>
+<h5 id="_15">设计</h5>
 <ul>
 <li>滑动时间窗口内的限流实现(zset)</li>
 </ul>
@@ -361,11 +394,24 @@ ex表示expire, nx表示if not exist</li>
 <ul>
 <li>有1亿用户,每个用户有100个tag,有100W个广告,每个广告有100个tag,设计找出最匹配用户的广告</li>
 </ul>
-<h5 id="_14">线程池</h5>
+<h5 id="_16">线程池</h5>
 <ul>
 <li><a href="https://tech.meituan.com/2020/04/02/java-pooling-pratice-in-meituan.html">线程池原理</a><ul>
 <li>线程池初始化配置corePoolSize为3，依次提交3个任务执行后，线程池里有3个线程</li>
 <li>线程6种状态(NEW Runnable WAITING TIMED_WAITING TERMINATED BLOCKED)</li>
+</ul>
+</li>
+</ul>
+<h3 id="_17">美团</h3>
+<p>体验很棒</p>
+<h4 id="_18">一面</h4>
+<h5 id="kafka_3">kafka的追溯</h5>
+<h5 id="redis_2">Redis的持久化策略</h5>
+<h5 id="javasprintboot">java/sprintboot</h5>
+<ul>
+<li>springboot 的循环引用解决</li>
+<li>一个线程oom，会影响其他线程运行吗<ul>
+<li>答案是不会影响,因为当一个线程抛出OOM异常(无论堆还是栈)后，它所占据的内存资源会全部被释放掉，从而不会影响其他线程的运行(线程不像进程，一个进程中的线程之间是没有父子之分的，都是平级关系。即线程都是一样的, 退出了一个不会影响另外一个)</li>
 </ul>
 </li>
 </ul>

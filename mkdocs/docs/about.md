@@ -101,9 +101,13 @@ set redis-key redis-value ex 5 nx
 #### 二面
 ##### java
    - java所有类的父类是(object),里面有几个方法，为什么有hashcode这个方法，用途是
+      - object中的hashcode函数用于将对象的内存地址转换为整数返回，用途是提高查找/比较对象（避免了多次equal）效率
+      - Java中类的hashCode是使用在类似哈希表的数据结构中的，如HashMap、HashSet、HashTable等，用于定位元素的位置，在其它地方没有什么意义！
    - 在synchronized外面notify不行吗？（问的是notify的底层原理了，每个锁都有一个队列的，离开了synchronized就不知道notify哪些线程）
+      - wait是本地方法，wait方式是通过对象的monitor对象来实现的，所以只要在同一对象上去调用notify/notifyAll方法，就可以唤醒对应对象monitor上等待的线程
    - 红黑树的特点是？hashmap为什么要用红黑树？
-      - 红黑树降低了平衡性，对于频繁改动节点的自选开销相对其他树低    
+      - 红黑树降低了平衡性，对于频繁改动节点的自旋开销相对其他树低,最好/最坏复杂度保证O(logN)
+      - 红黑树可以能确保树的最长路径不大于两倍的最短路径的长度
       [红黑树特点](https://blog.csdn.net/m0_37264516/article/details/84138212)
       [红黑树的适用场景](https://www.cnblogs.com/but999/p/12643956.html)
    

@@ -274,6 +274,7 @@ ex表示expire, nx表示if not exist</li>
 </ul>
 <pre><code>set redis-key redis-value ex 5 nx      
 </code></pre>
+
 <p>解锁 del redis-key <br />
 为防止误解锁,redis-value可设置为可标识当前线程的唯一id,eg:UUID <br />
 <a href="https://mp.weixin.qq.com/s/qJK61ew0kCExvXrqb7-RSg">Redis 分布式锁的正确实现方式</a> <br />
@@ -315,11 +316,19 @@ ex表示expire, nx表示if not exist</li>
 <h4 id="_7">二面</h4>
 <h5 id="java">java</h5>
 <ul>
-<li>java所有类的父类是(object),里面有几个方法，为什么有hashcode这个方法，用途是</li>
-<li>在synchronized外面notify不行吗？（问的是notify的底层原理了，每个锁都有一个队列的，离开了synchronized就不知道notify哪些线程）</li>
+<li>java所有类的父类是(object),里面有几个方法，为什么有hashcode这个方法，用途是<ul>
+<li>object中的hashcode函数用于将对象的内存地址转换为整数返回，用途是提高查找/比较对象（避免了多次equal）效率</li>
+<li>Java中类的hashCode是使用在类似哈希表的数据结构中的，如HashMap、HashSet、HashTable等，用于定位元素的位置，在其它地方没有什么意义！</li>
+</ul>
+</li>
+<li>在synchronized外面notify不行吗？（问的是notify的底层原理了，每个锁都有一个队列的，离开了synchronized就不知道notify哪些线程）<ul>
+<li>wait是本地方法，wait方式是通过对象的monitor对象来实现的，所以只要在同一对象上去调用notify/notifyAll方法，就可以唤醒对应对象monitor上等待的线程</li>
+</ul>
+</li>
 <li>红黑树的特点是？hashmap为什么要用红黑树？<ul>
-<li>红黑树降低了平衡性，对于频繁改动节点的自选开销相对其他树低  <br />
-<a href="https://blog.csdn.net/m0_37264516/article/details/84138212">红黑树特点</a>
+<li>红黑树降低了平衡性，对于频繁改动节点的自旋开销相对其他树低,最好/最坏复杂度保证O(logN)</li>
+<li>红黑树可以能确保树的最长路径不大于两倍的最短路径的长度
+  <a href="https://blog.csdn.net/m0_37264516/article/details/84138212">红黑树特点</a>
   <a href="https://www.cnblogs.com/but999/p/12643956.html">红黑树的适用场景</a></li>
 </ul>
 </li>
@@ -376,6 +385,7 @@ ex表示expire, nx表示if not exist</li>
 <pre><code>输入是a=&quot;cbacbfhj&quot;,b=&quot;abc&quot;,也就是a中包含b的所有起始index
 返回[0,1,2]
 </code></pre>
+
 <h4 id="_14">二面</h4>
 <h5 id="docker">docker怎么分层存储的？问的底层实现</h5>
 <h5 id="mysql_2">mysql</h5>
@@ -395,6 +405,7 @@ ex表示expire, nx表示if not exist</li>
     pipe.expire(key, period + 1)
     return current_count &lt;= max_count # 比较数量是否超标
 </code></pre>
+
 <ul>
 <li>有1亿用户,每个用户有100个tag,有100W个广告,每个广告有100个tag,设计找出最匹配用户的广告</li>
 </ul>

@@ -87,7 +87,8 @@ set redis-key redis-value ex 5 nx
 ##### Spring/boot
 - spring 特性
 - springboot 相比spring的好处
-- aop使用的场景    [aop原理以及实现](https://blog.csdn.net/u010452388/article/details/80868392)
+- aop使用的场景    
+[aop原理以及实现](https://blog.csdn.net/u010452388/article/details/80868392)
    - 记录日志
    - 监控方法的运行时间
    - 权限控制
@@ -101,6 +102,10 @@ set redis-key redis-value ex 5 nx
 ##### java
    - java所有类的父类是(object),里面有几个方法，为什么有hashcode这个方法，用途是
    - 在synchronized外面notify不行吗？（问的是notify的底层原理了，每个锁都有一个队列的，离开了synchronized就不知道notify哪些线程）
+   - 红黑树的特点是？hashmap为什么要用红黑树？
+      - 红黑树降低了平衡性，对于频繁改动节点的自选开销相对其他树低    
+      [红黑树特点](https://blog.csdn.net/m0_37264516/article/details/84138212)
+      [红黑树的适用场景](https://www.cnblogs.com/but999/p/12643956.html)
    
 ##### 设计
    - 项目的设计的原因是啥

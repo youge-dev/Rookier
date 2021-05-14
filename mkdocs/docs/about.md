@@ -212,6 +212,7 @@ def is_action_allowed(user_id, action_key, period, max_count):
 - 不用递归实现斐波那契数列
 ##### spring/springboot
 - springboot相比较spring的优缺点
+   - springboot 快速开发，配置简单(spring是xml配置)，但是也由于不用自己配置，报错时难定位
 - spring 解决循环依赖方法
 - 常用的spring注解
 - 介绍spring 依赖注入

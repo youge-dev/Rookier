@@ -221,3 +221,5 @@ def is_action_allowed(user_id, action_key, period, max_count):
 ##### mongo和mysql的索引区别？
 ##### 系统设计
 - 设计扫码登录
+   - [实现扫码登录的设计思想](https://www.cnblogs.com/sxdcgaq8080/p/10685818.html)
+   - [扫码登录实现原理](https://cloud.tencent.com/developer/article/1347341)

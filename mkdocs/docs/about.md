@@ -134,7 +134,8 @@ set redis-key redis-value ex 5 nx
       - 线程安全的，本质是内部的静态map,线程本地存储
 
 ##### 网络
-   - cookies 和 session的优缺点  
+   - cookies 和 session的优缺点   
+      - cookies
 ##### mysql
    - 又被问到了,`需要开始搞mysql的原理`
 ##### kafka的使用
@@ -180,4 +181,42 @@ def is_action_allowed(user_id, action_key, period, max_count):
    - springboot 的循环引用解决
    - 一个线程oom，会影响其他线程运行吗
       - 答案是不会影响,因为当一个线程抛出OOM异常(无论堆还是栈)后，它所占据的内存资源会全部被释放掉，从而不会影响其他线程的运行(线程不像进程，一个进程中的线程之间是没有父子之分的，都是平级关系。即线程都是一样的, 退出了一个不会影响另外一个)
-   
+
+### 商汤一面
+##### 算法
+手写生产者消费者
+##### kafka
+   - 为什么要用消费组
+      - 高性能，同时消费多分区
+      - 故障容错，消费组会对其成员进行管理，在有消费者加入或者退出后，消费者成员列表发生变化，消费组就会执行再平衡的操作
+         - 重平衡就是让一个Consumer Group下所有的Consumer实例,合理分配消费订阅topic的所有分区的过程
+      - 消费模式灵活
+   - 消费者组中的一个消费者down掉，kafka如何处理？
+      - [消费者重平衡](https://blog.csdn.net/qq_21383435/article/details/108720155)
+   - 对于kafka的分区副本，写入一条消息如何才算写入成功？ [kafka副本机制](https://www.cnblogs.com/caoweixiong/p/12049462.html)
+      - 分区leader的ISR同步副本中都向分区leader发送ack，leader才会commit
+   - kafka的分区leader挂掉后，怎么处理？ 
+##### mongo
+   - 介绍mongo的底层实现
+   - 如果自己设计mongo索引怎么做？
+   - 数据在mongo存储的形式是
+##### java   
+- Java内存模型与Java内存区域的划分是不同的概念层次,Java内存模型中规定所有变量都存储在主内存，主内存是共享内存区域，所有线程都可以访问，但线程对变量的操作(读取赋值等)必须(线程私有内存)在工作内存中进行   
+ [Java内存模型](https://blog.csdn.net/javazejian/article/details/72772461) 
+##### 项目设计
+   - KV具体设计  
+
+### 网易
+####一面
+##### 算法
+- 不用递归实现斐波那契数列
+##### spring/springboot
+- springboot相比较spring的优缺点
+- spring 解决循环依赖方法
+- 常用的spring注解
+- 介绍spring 依赖注入
+- 类加载器的了解
+- 常用几种锁，synchronize和reetrantlock的区别是
+##### mongo和mysql的索引区别？
+##### 系统设计
+- 设计扫码登录

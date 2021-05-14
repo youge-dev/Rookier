@@ -146,6 +146,36 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_19">商汤一面</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_20">算法</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#kafka_4">kafka</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#mongo">mongo</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#java_1">java</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_21">项目设计</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_22">网易</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_23">一面</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#_24">算法</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#springspringboot">spring/springboot</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#mongomysql">mongo和mysql的索引区别？</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_25">系统设计</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
     </ul>
                     </li>
                 </ul>
@@ -367,7 +397,10 @@ ex表示expire, nx表示if not exist</li>
 </ul>
 <h5 id="_11">网络</h5>
 <ul>
-<li>cookies 和 session的优缺点  </li>
+<li>cookies 和 session的优缺点   <ul>
+<li>cookies</li>
+</ul>
+</li>
 </ul>
 <h5 id="mysql_1">mysql</h5>
 <ul>
@@ -429,6 +462,66 @@ ex表示expire, nx表示if not exist</li>
 <li>答案是不会影响,因为当一个线程抛出OOM异常(无论堆还是栈)后，它所占据的内存资源会全部被释放掉，从而不会影响其他线程的运行(线程不像进程，一个进程中的线程之间是没有父子之分的，都是平级关系。即线程都是一样的, 退出了一个不会影响另外一个)</li>
 </ul>
 </li>
+</ul>
+<h3 id="_19">商汤一面</h3>
+<h5 id="_20">算法</h5>
+<p>手写生产者消费者</p>
+<h5 id="kafka_4">kafka</h5>
+<ul>
+<li>为什么要用消费组<ul>
+<li>高性能，同时消费多分区</li>
+<li>故障容错，消费组会对其成员进行管理，在有消费者加入或者退出后，消费者成员列表发生变化，消费组就会执行再平衡的操作<ul>
+<li>重平衡就是让一个Consumer Group下所有的Consumer实例,合理分配消费订阅topic的所有分区的过程</li>
+</ul>
+</li>
+<li>消费模式灵活</li>
+</ul>
+</li>
+<li>消费者组中的一个消费者down掉，kafka如何处理？<ul>
+<li><a href="https://blog.csdn.net/qq_21383435/article/details/108720155">消费者重平衡</a></li>
+</ul>
+</li>
+<li>对于kafka的分区副本，写入一条消息如何才算写入成功？ <a href="https://www.cnblogs.com/caoweixiong/p/12049462.html">kafka副本机制</a><ul>
+<li>分区leader的ISR同步副本中都向分区leader发送ack，leader才会commit</li>
+</ul>
+</li>
+<li>kafka的分区leader挂掉后，怎么处理？ </li>
+</ul>
+<h5 id="mongo">mongo</h5>
+<ul>
+<li>介绍mongo的底层实现</li>
+<li>如果自己设计mongo索引怎么做？</li>
+<li>数据在mongo存储的形式是</li>
+</ul>
+<h5 id="java_1">java</h5>
+<ul>
+<li>Java内存模型与Java内存区域的划分是不同的概念层次,Java内存模型中规定所有变量都存储在主内存，主内存是共享内存区域，所有线程都可以访问，但线程对变量的操作(读取赋值等)必须(线程私有内存)在工作内存中进行 <br />
+<a href="https://blog.csdn.net/javazejian/article/details/72772461">Java内存模型</a> </li>
+</ul>
+<h5 id="_21">项目设计</h5>
+<ul>
+<li>KV具体设计  </li>
+</ul>
+<h3 id="_22">网易</h3>
+<h4 id="_23">一面</h4>
+<h5 id="_24">算法</h5>
+<ul>
+<li>不用递归实现斐波那契数列</li>
+</ul>
+<h5 id="springspringboot">spring/springboot</h5>
+<ul>
+<li>springboot相比较spring的优缺点</li>
+<li>springboot 快速开发，配置简单(spring是xml配置)，但是也由于不用自己配置，报错时难定位</li>
+<li>spring 解决循环依赖方法</li>
+<li>常用的spring注解</li>
+<li>介绍spring 依赖注入</li>
+<li>类加载器的了解</li>
+<li>常用几种锁，synchronize和reetrantlock的区别是</li>
+</ul>
+<h5 id="mongomysql">mongo和mysql的索引区别？</h5>
+<h5 id="_25">系统设计</h5>
+<ul>
+<li>设计扫码登录</li>
 </ul>
               
             </div>

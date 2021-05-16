@@ -172,6 +172,8 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#_25">系统设计</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#gc">GC收集器对比</a>
+    </li>
         </ul>
     </li>
         </ul>
@@ -304,7 +306,6 @@ ex表示expire, nx表示if not exist</li>
 </ul>
 <pre><code>set redis-key redis-value ex 5 nx      
 </code></pre>
-
 <p>解锁 del redis-key <br />
 为防止误解锁,redis-value可设置为可标识当前线程的唯一id,eg:UUID <br />
 <a href="https://mp.weixin.qq.com/s/qJK61ew0kCExvXrqb7-RSg">Redis 分布式锁的正确实现方式</a> <br />
@@ -418,7 +419,6 @@ ex表示expire, nx表示if not exist</li>
 <pre><code>输入是a=&quot;cbacbfhj&quot;,b=&quot;abc&quot;,也就是a中包含b的所有起始index
 返回[0,1,2]
 </code></pre>
-
 <h4 id="_14">二面</h4>
 <h5 id="docker">docker怎么分层存储的？问的底层实现</h5>
 <h5 id="mysql_2">mysql</h5>
@@ -438,7 +438,6 @@ ex表示expire, nx表示if not exist</li>
     pipe.expire(key, period + 1)
     return current_count &lt;= max_count # 比较数量是否超标
 </code></pre>
-
 <ul>
 <li>有1亿用户,每个用户有100个tag,有100W个广告,每个广告有100个tag,设计找出最匹配用户的广告</li>
 </ul>
@@ -519,11 +518,56 @@ ex表示expire, nx表示if not exist</li>
 <li>常用几种锁，synchronize和reetrantlock的区别是</li>
 </ul>
 <h5 id="mongomysql">mongo和mysql的索引区别？</h5>
+<p>mongo底层索引是用B树，mysql是用B+树存储<a href="https://www.cnblogs.com/rjzheng/p/12316685.html">mongo和mysql索引实现</a></p>
 <h5 id="_25">系统设计</h5>
 <ul>
 <li>设计扫码登录</li>
 <li><a href="https://www.cnblogs.com/sxdcgaq8080/p/10685818.html">实现扫码登录的设计思想</a></li>
 <li><a href="https://cloud.tencent.com/developer/article/1347341">扫码登录实现原理</a></li>
+</ul>
+<h5 id="gc">GC收集器对比</h5>
+<ul>
+<li>CMS</li>
+<li>目的：获取最短回收停顿时间为目标</li>
+<li>标记-清除算法实现</li>
+<li>运行过程：<ul>
+<li>初始标记：stop the world，stop用户线程,标记GcRoots直接关联的对象，速度很快</li>
+<li>并发标记：垃圾收集线程与用户线程并发，从GC Roots直接关联对象扫描整个对象图，耗时长（增量更新：解决并发标记时用户线程修改导致的对象消失问题）</li>
+<li>重新标记：stop the world,修正并发标记期间用户线程运作导致标记变动的那一部分对象记录</li>
+<li>并发清除：清理已标记死亡对象，无须移动存活对象，用户线程可并发</li>
+</ul>
+</li>
+<li>优点：并发收集，低停顿</li>
+<li>缺点：<ul>
+<li>1.对处理器资源敏感，CMS默认启动回收线程数=(处理器核心数+3)/4，当处理器核心数&lt;4,cms的回收线程占据很大运算资源导致用户程序变慢</li>
+<li>2.无法处理浮动垃圾，无法处理并发标记/清理期间用户线程产生的新垃圾对象，只能等待下一次垃圾回收</li>
+<li>3.标记清除会产生大量空间碎片</li>
+</ul>
+</li>
+<li>G1   </li>
+<li>特点：
+<code>面向局部收集和基于region的内存布局，不再坚持固定大小以及固定数量的分代区域划分，
+  把java堆划分为多个大小相等的region，每个region可扮演eden/survivor/老年代，
+  ,region中有一类特殊的Humongous区域，用于存放大对象，主要面向服务端应用，可预测停顿时间（-XX:MaxGCPauseMills,默认200ms）
+  ，收集器在后台维护了一个优先列表，每次根据允许的收集时间，优先选择回收价值最大的 Region</code> </li>
+<li>整体看是"标记-整理算法"，从局部看（两个regionz之间）是"标记-复制算法"</li>
+<li>运行过程：<ul>
+<li>初始标记：标记GcRoots直接关联的对象，stop the world，stop用户线程</li>
+<li>并发标记：从GcRoots开始对堆递归扫描，与用户线程并发（原始快照法：解决并发标记时用户线程修改导致的对象消失问题，每个region里面有TAMS空间，供并发时用户线程的新对象分配）</li>
+<li>最终标记：stop the world,修正并发标记期间用户线程运作导致标记变动的那一部分对象记录</li>
+<li>筛选回收：stop the world,stop用户线程，根据用户配置的停顿时间，选择多个region组成回收集，标记复制回收region</li>
+</ul>
+</li>
+<li>优点：有限时间内可以尽可能高的收集效率(内存化整为零)，无内存碎片</li>
+<li>缺点：<ul>
+<li>内存占用：G1和CMS都使用<strong>卡表</strong>来处理跨代引用，但G1实现复杂，占用更多内存</li>
+<li>执行负载：CMS用***写后屏障来维护卡表，G1同时使用写前屏障和写后屏障，所以消耗更多运算资源</li>
+</ul>
+</li>
+<li>reference <br />
+  写屏障：hotspot虚拟机通过<strong>写屏障</strong>来维护卡表状态（解决对象跨代引用问题），写屏障可看作虚拟机层面对类型字段赋值的aop切面，在引用对象赋值时产生环形通知</li>
+<li>选G1和CMS的依据</li>
+<li>小内存应用CMS表现大概率优于G1，而大内存应用G1大多发挥较好，这个优劣势的Java堆容量平衡点在6GB-8GB</li>
 </ul>
               
             </div>

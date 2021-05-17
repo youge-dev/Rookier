@@ -564,10 +564,10 @@ ex表示expire, nx表示if not exist</li>
 <li>优点：有限时间内可以尽可能高的收集效率(内存化整为零)，无内存碎片</li>
 <li>缺点：<ul>
 <li>内存占用：G1和CMS都使用<strong>卡表</strong>来处理跨代引用，但G1实现复杂，占用更多内存</li>
-<li>执行负载：CMS用***写后屏障来维护卡表，G1同时使用写前屏障和写后屏障，所以消耗更多运算资源</li>
+<li>执行负载：CMS用<strong>写后屏障</strong>来维护卡表，G1同时使用写前屏障和写后屏障，所以消耗更多运算资源</li>
 </ul>
 </li>
-<li>reference <br />
+<li><strong><em>reference</em></strong> <br />
   写屏障：hotspot虚拟机通过<strong>写屏障</strong>来维护卡表状态（解决对象跨代引用问题），写屏障可看作虚拟机层面对类型字段赋值的aop切面，在引用对象赋值时产生环形通知</li>
 <li>选G1和CMS的依据</li>
 <li>小内存应用CMS表现大概率优于G1，而大内存应用G1大多发挥较好，这个优劣势的Java堆容量平衡点在6GB-8GB</li>

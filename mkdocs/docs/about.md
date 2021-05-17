@@ -40,11 +40,11 @@
    1. kafka的架构是  
    2. 消费者数量一定时候如何提高消费能力 [提供消费能力](https://www.jianshu.com/p/4e00dff97f39)
    3. 吞吐量大的原因   
-      - 日志顺序读写和快速检索  
+      - 日志顺序读写和快速检索 (其中顺序写入采用了mmap方式,减少了内核态和用户态切换,读用sendfile) 
       - partition机制 (并行但不保证全topic有序)  
       - 批量发送接收和数据压缩机制  
-      - 通过sendfile实现零拷贝原则   [零拷贝](https://zhuanlan.zhihu.com/p/78335525)
-         - 以前是文件->内核->用户缓冲区->内核socket->消费者进程  
+      - 通过sendfile实现**零拷贝**原则  (零拷贝并不是不需要拷贝，而是减少不必要的拷贝次数) [零拷贝](https://zhuanlan.zhihu.com/p/78335525)
+         - 以前是磁盘文件->内核buffer->用户缓冲区->内核socket buffer->消费者进程  
          - 零拷贝是调用linux系统函数, 文件->内核read buffer->内核socket->消费者进程 
     
 
@@ -60,11 +60,13 @@
    [aof机制](https://redisbook.readthedocs.io/en/latest/internal/aof.html)   
    [aof重写](http://doc.redisfans.com/topic/persistence.html)
       - aof 重写: fork子进程写新aof文件，期间新的写命令，父进程一边累积到内存cache,一边写到旧aof文件,子进程重写完成发信号给父进程，父进程将内存cache数据追加到新aof，并替换老aof
+   *
    * 分布式锁实现   
 ex表示expire, nx表示if not exist
 ```
 set redis-key redis-value ex 5 nx      
 ```
+
 解锁 del redis-key   
 为防止误解锁,redis-value可设置为可标识当前线程的唯一id,eg:UUID   
 [Redis 分布式锁的正确实现方式](https://mp.weixin.qq.com/s/qJK61ew0kCExvXrqb7-RSg)   
@@ -211,12 +213,15 @@ def is_action_allowed(user_id, action_key, period, max_count):
 ##### 算法
 - 不用递归实现斐波那契数列
 ##### spring/springboot
+- spring IoC 就是一个容器。类似一个hashMap，存的key是beanName,value是beanDefinition
+   注入的方式就是通过**反射**。知道了beanName。class.forname("")拿到class对象。newInstance()来生成实例，再用BeanDefinition中的信息调用实例的set()方法，将实例的属性进行赋值。      
 - springboot相比较spring的优缺点
    - springboot 快速开发，配置简单(spring是xml配置)，但是也由于不用自己配置，报错时难定位
 - spring 解决循环依赖方法
 - 常用的spring注解
 - 介绍spring 依赖注入
 - 类加载器的了解
+- [为什么用户态和内核态切换的开销大呢？](https://segmentfault.com/q/1010000024558222) 涉及到上下文切换,系统中断等
 - 常用几种锁，synchronize和reetrantlock的区别是
 ##### mongo和mysql的索引区别？
 mongo底层索引是用B树，mysql是用B+树存储[mongo和mysql索引实现](https://www.cnblogs.com/rjzheng/p/12316685.html)

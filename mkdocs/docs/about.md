@@ -224,7 +224,8 @@ mongo底层索引是用B树，mysql是用B+树存储[mongo和mysql索引实现](
 - 设计扫码登录
    - [实现扫码登录的设计思想](https://www.cnblogs.com/sxdcgaq8080/p/10685818.html)
    - [扫码登录实现原理](https://cloud.tencent.com/developer/article/1347341)
-   
+##### RPC底层实现(thrift和grpc)
+
 ##### GC收集器对比   
 - CMS
    - 目的：获取最短回收停顿时间为目标
@@ -257,6 +258,8 @@ mongo底层索引是用B树，mysql是用B+树存储[mongo和mysql索引实现](
       - 内存占用：G1和CMS都使用**卡表**来处理跨代引用，但G1实现复杂，占用更多内存
       - 执行负载：CMS用**写后屏障**来维护卡表，G1同时使用写前屏障和写后屏障，所以消耗更多运算资源
    - ***reference***   
-  写屏障：hotspot虚拟机通过**写屏障**来维护卡表状态（解决对象跨代引用问题），写屏障可看作虚拟机层面对类型字段赋值的aop切面，在引用对象赋值时产生环形通知
+  **卡表**解决跨代引用时的全局扫描,卡表把堆空间分成一个个卡页（512B）,卡表是一个字节数组,存在跨代引用时，对应页标记为脏页[jvm卡表](https://blog.csdn.net/lishe9452/article/details/108215214)   
+  **写屏障**：hotspot虚拟机通过**写屏障**来维护卡表状态（解决对象跨代引用问题），写屏障可看作虚拟机层面对类型字段赋值的aop切面，在引用对象赋值时产生环形通知   
+  ![avatar](/home/yaquan.zhou/Pictures/card.png)
 - 选G1和CMS的依据
    - 小内存应用CMS表现大概率优于G1，而大内存应用G1大多发挥较好，这个优劣势的Java堆容量平衡点在6GB-8GB

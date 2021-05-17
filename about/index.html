@@ -172,6 +172,8 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#_25">系统设计</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#rpcthriftgrpc">RPC底层实现(thrift和grpc)</a>
+    </li>
     <li class="toctree-l4"><a class="reference internal" href="#gc">GC收集器对比</a>
     </li>
         </ul>
@@ -528,6 +530,7 @@ ex表示expire, nx表示if not exist</li>
 <li><a href="https://www.cnblogs.com/sxdcgaq8080/p/10685818.html">实现扫码登录的设计思想</a></li>
 <li><a href="https://cloud.tencent.com/developer/article/1347341">扫码登录实现原理</a></li>
 </ul>
+<h5 id="rpcthriftgrpc">RPC底层实现(thrift和grpc)</h5>
 <h5 id="gc">GC收集器对比</h5>
 <ul>
 <li>CMS</li>
@@ -568,7 +571,9 @@ ex表示expire, nx表示if not exist</li>
 </ul>
 </li>
 <li><strong><em>reference</em></strong> <br />
-  写屏障：hotspot虚拟机通过<strong>写屏障</strong>来维护卡表状态（解决对象跨代引用问题），写屏障可看作虚拟机层面对类型字段赋值的aop切面，在引用对象赋值时产生环形通知</li>
+<strong>卡表</strong>解决跨代引用时的全局扫描,卡表把堆空间分成一个个卡页（512B）,卡表是一个字节数组,存在跨代引用时，对应页标记为脏页<a href="https://blog.csdn.net/lishe9452/article/details/108215214">jvm卡表</a> <br />
+<strong>写屏障</strong>：hotspot虚拟机通过<strong>写屏障</strong>来维护卡表状态（解决对象跨代引用问题），写屏障可看作虚拟机层面对类型字段赋值的aop切面，在引用对象赋值时产生环形通知 <br />
+<img alt="avatar" src="/home/yaquan.zhou/Pictures/card.png" /></li>
 <li>选G1和CMS的依据</li>
 <li>小内存应用CMS表现大概率优于G1，而大内存应用G1大多发挥较好，这个优劣势的Java堆容量平衡点在6GB-8GB</li>
 </ul>

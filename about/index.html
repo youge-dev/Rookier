@@ -271,11 +271,11 @@
 <li>kafka的架构是  </li>
 <li>消费者数量一定时候如何提高消费能力 <a href="https://www.jianshu.com/p/4e00dff97f39">提供消费能力</a></li>
 <li>吞吐量大的原因   <ul>
-<li>日志顺序读写和快速检索  </li>
+<li>日志顺序读写和快速检索 (其中顺序写入采用了mmap方式,减少了内核态和用户态切换,读用sendfile) </li>
 <li>partition机制 (并行但不保证全topic有序)  </li>
 <li>批量发送接收和数据压缩机制  </li>
-<li>通过sendfile实现零拷贝原则   <a href="https://zhuanlan.zhihu.com/p/78335525">零拷贝</a><ul>
-<li>以前是文件-&gt;内核-&gt;用户缓冲区-&gt;内核socket-&gt;消费者进程  </li>
+<li>通过sendfile实现<strong>零拷贝</strong>原则  (零拷贝并不是不需要拷贝，而是减少不必要的拷贝次数) <a href="https://zhuanlan.zhihu.com/p/78335525">零拷贝</a><ul>
+<li>以前是磁盘文件-&gt;内核buffer-&gt;用户缓冲区-&gt;内核socket buffer-&gt;消费者进程  </li>
 <li>零拷贝是调用linux系统函数, 文件-&gt;内核read buffer-&gt;内核socket-&gt;消费者进程 </li>
 </ul>
 </li>
@@ -300,7 +300,8 @@
 <a href="https://blog.csdn.net/weixin_38405253/article/details/106416618">rbd 写时复制</a> <br />
 <a href="https://redisbook.readthedocs.io/en/latest/internal/aof.html">aof机制</a> <br />
 <a href="http://doc.redisfans.com/topic/persistence.html">aof重写</a></li>
-<li>aof 重写: fork子进程写新aof文件，期间新的写命令，父进程一边累积到内存cache,一边写到旧aof文件,子进程重写完成发信号给父进程，父进程将内存cache数据追加到新aof，并替换老aof</li>
+<li>aof 重写: fork子进程写新aof文件，期间新的写命令，父进程一边累积到内存cache,一边写到旧aof文件,子进程重写完成发信号给父进程，父进程将内存cache数据追加到新aof，并替换老aof
+   *</li>
 </ul>
 </li>
 <li>分布式锁实现 <br />
@@ -514,12 +515,15 @@ ex表示expire, nx表示if not exist</li>
 </ul>
 <h5 id="springspringboot">spring/springboot</h5>
 <ul>
+<li>spring IoC 就是一个容器。类似一个hashMap，存的key是beanName,value是beanDefinition
+   注入的方式就是通过<strong>反射</strong>。知道了beanName。class.forname("")拿到class对象。newInstance()来生成实例，再用BeanDefinition中的信息调用实例的set()方法，将实例的属性进行赋值。      </li>
 <li>springboot相比较spring的优缺点</li>
 <li>springboot 快速开发，配置简单(spring是xml配置)，但是也由于不用自己配置，报错时难定位</li>
 <li>spring 解决循环依赖方法</li>
 <li>常用的spring注解</li>
 <li>介绍spring 依赖注入</li>
 <li>类加载器的了解</li>
+<li><a href="https://segmentfault.com/q/1010000024558222">为什么用户态和内核态切换的开销大呢？</a> 涉及到上下文切换,系统中断等</li>
 <li>常用几种锁，synchronize和reetrantlock的区别是</li>
 </ul>
 <h5 id="mongomysql">mongo和mysql的索引区别？</h5>

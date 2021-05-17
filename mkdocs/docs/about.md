@@ -179,6 +179,7 @@ def is_action_allowed(user_id, action_key, period, max_count):
 #### 一面
 ##### kafka的追溯
 ##### Redis的持久化策略
+##### [redis 处理请求的流程](https://souce.github.io/blog/redis/2016/08/04/redis%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82%E7%9A%84%E6%B5%81%E7%A8%8B.html)
 ##### java/sprintboot
    - springboot 的循环引用解决
    - 一个线程oom，会影响其他线程运行吗

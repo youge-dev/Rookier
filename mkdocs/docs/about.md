@@ -260,3 +260,33 @@ mongo底层索引是用B树，mysql是用B+树存储[mongo和mysql索引实现](
   写屏障：hotspot虚拟机通过**写屏障**来维护卡表状态（解决对象跨代引用问题），写屏障可看作虚拟机层面对类型字段赋值的aop切面，在引用对象赋值时产生环形通知
 - 选G1和CMS的依据
    - 小内存应用CMS表现大概率优于G1，而大内存应用G1大多发挥较好，这个优劣势的Java堆容量平衡点在6GB-8GB
+   
+### 抖音效率平台
+####一面
+##### 算法
+ - [无重复字符的最长子串](https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/)
+##### 统计日志文件中请求url的top个数
+log.txt格式为 1 get/post http://**   
+**cat log.txt | awk -F ' ' '{print $3}' | sort -n | uniq -c | sort -r -k1 | head -n 10**   
+##### mongo的复合索引以及Mongo分片模式
+-[分片模式](https://blog.csdn.net/wanght89/article/details/77842336)   
+   - shards -- 分片模式下的存储数据mongo节点
+   - mongo config -- 保存持久化分片集群的元数据
+   - mongos 路由器 -- 负责分片处理的mongoDB
+   - 分片模式有两种方式：range sharding（范围分片）和 hash（哈希分片）
+##### hashmap   
+- 看源码总结为以下步骤：
+- 插入数据的过程
+   - 1. putVal(hash(key),key,value)
+   - 2. 判断hashmap存储链表头的node 数组是否为空，为空则resize（涉及到rehash）分配空间
+   - 3. tab[i = (n - 1) & hash]) == null)，哈希计算存储位置是否为空，空则直接写入
+   - 4. 非空则判断，是树节则putTreeVal,否则在遍历对应的链表进行尾插
+- 查询数据的过程
+   - 用Key的hashcode 定位tab[(n - 1) & hash]数组下标，为空则返null
+   - check 数组的链表的头节点->是否为树节点->遍历链表 (判断条件是hash(key)&& key 同时相等)
+- hashmap resize扩容是2倍，遍历老的entry重新rehash到新数组
+- hashmap 先hash(key)以及tab[(n - 1) & hash]两次哈希，目的是降低碰撞概率
+- 头插法在多线程时会产生环的现象，所以后来改成了尾插法
+##### ConcurrentHashMap
+- Java8 的 ConcurrentHashMap 相对于 Java7 来说变化比较大，不再是之前的 Segment 数组 + HashEntry 数组 + 链表，而是 Node 数组 + 链表 / 红黑树。当冲突链表达到一定长度时，链表会转换成红黑树
+- 1.7 两级hash  1.8 volatile + CAS + synchronized

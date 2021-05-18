@@ -222,6 +222,12 @@ def is_action_allowed(user_id, action_key, period, max_count):
 - 常用的spring注解
 - 介绍spring 依赖注入
 - 类加载器的了解
+- 一个已不可达GCroots对象，直接执行了system.gc()会怎么样？
+   - 一个对象已经死亡，至少需要经历两个被标记过程
+   - Java虚拟机一旦通过刚才提到的“根搜索算法”判断出某对象处于可回收状态时，会判断该对象是否重写了Object类的finalize方法，如果没，则直接回收   
+   - 如重写过finalize方法，而且未执行过该方法，则把该对象其放入F-Queue队列,Finalizer线程线程会定时遍历F-Queue队列，并执行该队列中各对象的finalize方法   
+   - finalize方法执行完毕后，GC会再次判断该对象是否可被回收，如果可以，则进行回收，如果此时该对象上有强引用，则该对象“复活”，即处于“不可回收状态”   
+   - **对象的finalize()方法只会被JVM执行一次，如果进行二次GC再次触发了该对象回收就不会再执行了，直接会回收掉**   
 - [为什么用户态和内核态切换的开销大呢？](https://segmentfault.com/q/1010000024558222) 涉及到上下文切换,系统中断等
 - 常用几种锁，synchronize和reetrantlock的区别是
 ##### mongo和mysql的索引区别？

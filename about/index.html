@@ -196,6 +196,8 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#concurrenthashmap">ConcurrentHashMap</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#_29">类加载器</a>
+    </li>
         </ul>
     </li>
         </ul>
@@ -329,6 +331,7 @@ ex表示expire, nx表示if not exist</li>
 </ul>
 <pre><code>set redis-key redis-value ex 5 nx      
 </code></pre>
+
 <p>解锁 del redis-key <br />
 为防止误解锁,redis-value可设置为可标识当前线程的唯一id,eg:UUID <br />
 <a href="https://mp.weixin.qq.com/s/qJK61ew0kCExvXrqb7-RSg">Redis 分布式锁的正确实现方式</a> <br />
@@ -442,6 +445,7 @@ ex表示expire, nx表示if not exist</li>
 <pre><code>输入是a=&quot;cbacbfhj&quot;,b=&quot;abc&quot;,也就是a中包含b的所有起始index
 返回[0,1,2]
 </code></pre>
+
 <h4 id="_14">二面</h4>
 <h5 id="docker">docker怎么分层存储的？问的底层实现</h5>
 <h5 id="mysql_2">mysql</h5>
@@ -461,6 +465,7 @@ ex表示expire, nx表示if not exist</li>
     pipe.expire(key, period + 1)
     return current_count &lt;= max_count # 比较数量是否超标
 </code></pre>
+
 <ul>
 <li>有1亿用户,每个用户有100个tag,有100W个广告,每个广告有100个tag,设计找出最匹配用户的广告</li>
 </ul>
@@ -619,47 +624,32 @@ ex表示expire, nx表示if not exist</li>
 <p>log.txt格式为 1 get/post http://<strong> <br />
 </strong>cat log.txt | awk -F ' ' '{print $3}' | sort -n | uniq -c | sort -r -k1 | head -n 10**   </p>
 <h5 id="mongomongo_1">mongo的复合索引以及Mongo分片模式</h5>
-<p>-<a href="https://blog.csdn.net/wanght89/article/details/77842336">分片模式</a> <br />
-   - shards -- 分片模式下的存储数据mongo节点
-   - mongo config -- 保存持久化分片集群的元数据
-   - mongos 路由器 -- 负责分片处理的mongoDB
-   - 分片模式有两种方式：range sharding（范围分片）和 hash（哈希分片）</p>
+<p>-<a href="https://blog.csdn.net/wanght89/article/details/77842336">分片模式</a>    <br />
+   - shards -- 分片模式下的存储数据mongo节点 <br />
+   - mongo config -- 保存持久化分片集群的元数据 <br />
+   - mongos 路由器 -- 负责分片处理的mongoDB <br />
+   - 分片模式有两种方式：range sharding（范围分片）和 hash（哈希分片）   </p>
 <h5 id="hashmap">hashmap</h5>
 <ul>
 <li>看源码总结为以下步骤：</li>
 <li>插入数据的过程</li>
-<li>
-<ol>
-<li>putVal(hash(key),key,value)</li>
-</ol>
-</li>
-<li>
-<ol>
-<li>判断hashmap存储链表头的node 数组是否为空，为空则resize（涉及到rehash）分配空间</li>
-</ol>
-</li>
-<li>
-<ol>
-<li>tab[i = (n - 1) &amp; hash]) == null)，哈希计算存储位置是否为空，空则直接写入</li>
-</ol>
-</li>
-<li>
-<ol>
-<li>非空则判断，是树节则putTreeVal,否则在遍历对应的链表进行尾插</li>
-</ol>
-</li>
-<li>查询数据的过程</li>
-<li>用Key的hashcode 定位tab[(n - 1) &amp; hash]数组下标，为空则返null</li>
-<li>check 数组的链表的头节点-&gt;是否为树节点-&gt;遍历链表 (判断条件是hash(key)&amp;&amp; key 同时相等)</li>
-<li>hashmap resize扩容是2倍，遍历老的entry重新rehash到新数组</li>
-<li>hashmap 先hash(key)以及tab[(n - 1) &amp; hash]两次哈希，目的是降低碰撞概率</li>
-<li>头插法在多线程时会产生环的现象，所以后来改成了尾插法</li>
+<li>putVal(hash(key),key,value)   </li>
+<li>判断hashmap存储链表头的node 数组是否为空，为空则resize（涉及到rehash）分配空间   </li>
+<li>tab[i = (n - 1) &amp; hash]) == null)，哈希计算存储位置是否为空，空则直接写入   </li>
+<li>非空则判断，是树节则putTreeVal,否则在遍历对应的链表进行尾插   </li>
+<li>查询数据的过程   </li>
+<li>用Key的hashcode 定位tab[(n - 1) &amp; hash]数组下标，为空则返null      </li>
+<li>check 数组的链表的头节点-&gt;是否为树节点-&gt;遍历链表 (判断条件是hash(key)&amp;&amp; key 同时相等)      </li>
+<li>hashmap resize扩容是2倍，遍历老的entry重新rehash到新数组   </li>
+<li>hashmap 先hash(key)以及tab[(n - 1) &amp; hash]两次哈希，目的是降低碰撞概率   </li>
+<li>头插法在多线程时会产生环的现象，所以后来改成了尾插法   </li>
 </ul>
 <h5 id="concurrenthashmap">ConcurrentHashMap</h5>
 <ul>
 <li>Java8 的 ConcurrentHashMap 相对于 Java7 来说变化比较大，不再是之前的 Segment 数组 + HashEntry 数组 + 链表，而是 Node 数组 + 链表 / 红黑树。当冲突链表达到一定长度时，链表会转换成红黑树</li>
 <li>1.7 两级hash  1.8 volatile + CAS + synchronized</li>
 </ul>
+<h5 id="_29"><a href="https://snailclimb.gitee.io/javaguide/#/docs/java/jvm/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8">类加载器</a></h5>
               
             </div>
           </div>

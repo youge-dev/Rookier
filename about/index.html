@@ -335,7 +335,6 @@ ex表示expire, nx表示if not exist</li>
 </ul>
 <pre><code>set redis-key redis-value ex 5 nx      
 </code></pre>
-
 <p>解锁 del redis-key <br />
 为防止误解锁,redis-value可设置为可标识当前线程的唯一id,eg:UUID <br />
 <a href="https://mp.weixin.qq.com/s/qJK61ew0kCExvXrqb7-RSg">Redis 分布式锁的正确实现方式</a> <br />
@@ -449,7 +448,6 @@ ex表示expire, nx表示if not exist</li>
 <pre><code>输入是a=&quot;cbacbfhj&quot;,b=&quot;abc&quot;,也就是a中包含b的所有起始index
 返回[0,1,2]
 </code></pre>
-
 <h4 id="_14">二面</h4>
 <h5 id="docker">docker怎么分层存储的？问的底层实现</h5>
 <h5 id="mysql_2">mysql</h5>
@@ -469,7 +467,6 @@ ex表示expire, nx表示if not exist</li>
     pipe.expire(key, period + 1)
     return current_count &lt;= max_count # 比较数量是否超标
 </code></pre>
-
 <ul>
 <li>有1亿用户,每个用户有100个tag,有100W个广告,每个广告有100个tag,设计找出最匹配用户的广告</li>
 </ul>
